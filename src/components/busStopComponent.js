@@ -1,26 +1,43 @@
-// components/UserComponent.js
-
 import React from "react";
-import useUsers from "../hooks/useUsers";
+import useBusStops from "../hooks/useBusStops.js";
 
-const UserComponent = () => {
+const StopsComponent = () => {
   const {
-    users,
-    newUser,
-    editingUser,
+    stops,
+    newStop,
+    editingStop,
     error,
     loading,
-    handleCreateUser,
-    handleUpdateUser,
+    handleCreateStop,
+    handleUpdateStop,
     handleSaveUpdate,
-    handleDeleteUser,
+    handleDeleteStop,
     handleChange,
     resetForm,
-  } = useUsers();
+    validateStop, // Ensure this is included
+  } = useBusStops();
+
+  // Handle creating a new stop
+  const handleCreate = () => {
+    if (validateStop(newStop)) {
+      handleCreateStop();
+    } else {
+      alert("Please fill all required fields.");
+    }
+  };
+
+  // Handle saving updates to an existing stop
+  const handleSave = () => {
+    if (validateStop(newStop)) {
+      handleSaveUpdate();
+    } else {
+      alert("Please fill all required fields.");
+    }
+  };
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: "20px" }}>
-      <h1 style={{ textAlign: "center", color: "#333" }}>Users</h1>
+      <h1 style={{ textAlign: "center", color: "#333" }}>Stops</h1>
       {loading && <p style={{ textAlign: "center" }}>Loading...</p>}
       {error && <p style={{ color: "red", textAlign: "center" }}>{error}</p>}
       <table
@@ -38,30 +55,28 @@ const UserComponent = () => {
             }}
           >
             <th style={{ padding: "10px", textAlign: "left" }}>ID</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Full Name</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Email</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Phone Number</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Area</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>District</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Level</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Route ID</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>City Name</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Stop Order</th>
             <th style={{ padding: "10px", textAlign: "left" }}>Coordinate</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Stop Name</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Stop Type</th>
             <th style={{ padding: "10px", textAlign: "left" }}>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
-            <tr key={user.id} style={{ borderBottom: "1px solid #ddd" }}>
-              <td style={{ padding: "10px" }}>{user.id}</td>
-              <td style={{ padding: "10px" }}>{user.full_name}</td>
-              <td style={{ padding: "10px" }}>{user.email}</td>
-              <td style={{ padding: "10px" }}>{user.phone_number}</td>
-              <td style={{ padding: "10px" }}>{user.area}</td>
-              <td style={{ padding: "10px" }}>{user.district}</td>
-              <td style={{ padding: "10px" }}>{user.level}</td>
-              <td style={{ padding: "10px" }}>{user.coordinate}</td>
+          {stops.map((stop) => (
+            <tr key={stop.id} style={{ borderBottom: "1px solid #ddd" }}>
+              <td style={{ padding: "10px" }}>{stop.id}</td>
+              <td style={{ padding: "10px" }}>{stop.route_id}</td>
+              <td style={{ padding: "10px" }}>{stop.city_name}</td>
+              <td style={{ padding: "10px" }}>{stop.stop_order}</td>
+              <td style={{ padding: "10px" }}>{stop.coordinate}</td>
+              <td style={{ padding: "10px" }}>{stop.stop_name}</td>
+              <td style={{ padding: "10px" }}>{stop.stop_type}</td>
               <td style={{ padding: "10px" }}>
                 <button
-                  onClick={() => handleUpdateUser(user.id)}
+                  onClick={() => handleUpdateStop(stop.id)}
                   style={{
                     backgroundColor: "#4CAF50",
                     color: "white",
@@ -74,7 +89,7 @@ const UserComponent = () => {
                   Update
                 </button>
                 <button
-                  onClick={() => handleDeleteUser(user.id)}
+                  onClick={() => handleDeleteStop(stop.id)}
                   style={{
                     backgroundColor: "#f44336",
                     color: "white",
@@ -91,7 +106,7 @@ const UserComponent = () => {
         </tbody>
       </table>
       <h2 style={{ textAlign: "center", color: "#333" }}>
-        {editingUser ? "Update User" : "Create New User"}
+        {editingStop ? "Update Stop" : "Create New Stop"}
       </h2>
       <div
         style={{
@@ -102,10 +117,10 @@ const UserComponent = () => {
         }}
       >
         <input
-          name="full_name"
+          name="route_id"
           type="text"
-          placeholder="Full Name"
-          value={newUser.full_name}
+          placeholder="Route ID"
+          value={newStop.route_id}
           onChange={handleChange}
           style={{
             marginBottom: "10px",
@@ -115,36 +130,10 @@ const UserComponent = () => {
           }}
         />
         <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          value={newUser.email}
-          onChange={handleChange}
-          style={{
-            marginBottom: "10px",
-            padding: "10px",
-            borderRadius: "4px",
-            border: "1px solid #ddd",
-          }}
-        />
-        <input
-          name="password_hash"
-          type="password"
-          placeholder="Password"
-          value={newUser.password_hash}
-          onChange={handleChange}
-          style={{
-            marginBottom: "10px",
-            padding: "10px",
-            borderRadius: "4px",
-            border: "1px solid #ddd",
-          }}
-        />
-        <input
-          name="phone_number"
+          name="city_name"
           type="text"
-          placeholder="Phone Number"
-          value={newUser.phone_number}
+          placeholder="City Name"
+          value={newStop.city_name}
           onChange={handleChange}
           style={{
             marginBottom: "10px",
@@ -154,36 +143,10 @@ const UserComponent = () => {
           }}
         />
         <input
-          name="area"
+          name="stop_order"
           type="text"
-          placeholder="Area"
-          value={newUser.area}
-          onChange={handleChange}
-          style={{
-            marginBottom: "10px",
-            padding: "10px",
-            borderRadius: "4px",
-            border: "1px solid #ddd",
-          }}
-        />
-        <input
-          name="district"
-          type="text"
-          placeholder="District"
-          value={newUser.district}
-          onChange={handleChange}
-          style={{
-            marginBottom: "10px",
-            padding: "10px",
-            borderRadius: "4px",
-            border: "1px solid #ddd",
-          }}
-        />
-        <input
-          name="level"
-          type="text"
-          placeholder="Level"
-          value={newUser.level}
+          placeholder="Stop Order"
+          value={newStop.stop_order}
           onChange={handleChange}
           style={{
             marginBottom: "10px",
@@ -196,7 +159,7 @@ const UserComponent = () => {
           name="coordinate"
           type="text"
           placeholder="Coordinate"
-          value={newUser.coordinate}
+          value={newStop.coordinate}
           onChange={handleChange}
           style={{
             marginBottom: "10px",
@@ -205,10 +168,36 @@ const UserComponent = () => {
             border: "1px solid #ddd",
           }}
         />
-        {editingUser ? (
+        <input
+          name="stop_name"
+          type="text"
+          placeholder="Stop Name"
+          value={newStop.stop_name}
+          onChange={handleChange}
+          style={{
+            marginBottom: "10px",
+            padding: "10px",
+            borderRadius: "4px",
+            border: "1px solid #ddd",
+          }}
+        />
+        <input
+          name="stop_type"
+          type="text"
+          placeholder="Stop Type"
+          value={newStop.stop_type}
+          onChange={handleChange}
+          style={{
+            marginBottom: "10px",
+            padding: "10px",
+            borderRadius: "4px",
+            border: "1px solid #ddd",
+          }}
+        />
+        {editingStop ? (
           <div>
             <button
-              onClick={handleSaveUpdate}
+              onClick={handleSave}
               style={{
                 backgroundColor: "#2196F3",
                 color: "white",
@@ -237,7 +226,7 @@ const UserComponent = () => {
           </div>
         ) : (
           <button
-            onClick={handleCreateUser}
+            onClick={handleCreate}
             style={{
               backgroundColor: "#2196F3",
               color: "white",
@@ -247,7 +236,7 @@ const UserComponent = () => {
               borderRadius: "4px",
             }}
           >
-            Create User
+            Create Stop
           </button>
         )}
       </div>
@@ -255,4 +244,4 @@ const UserComponent = () => {
   );
 };
 
-export default UserComponent;
+export default StopsComponent;
