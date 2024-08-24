@@ -1,5 +1,3 @@
-// components/UserComponent.js
-
 import React from "react";
 import useUsers from "../hooks/useUsers";
 
@@ -38,13 +36,10 @@ const UserComponent = () => {
             }}
           >
             <th style={{ padding: "10px", textAlign: "left" }}>ID</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Full Name</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Username</th>
             <th style={{ padding: "10px", textAlign: "left" }}>Email</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Phone Number</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Area</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>District</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Level</th>
-            <th style={{ padding: "10px", textAlign: "left" }}>Coordinate</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Gender</th>
+            <th style={{ padding: "10px", textAlign: "left" }}>Residence</th>
             <th style={{ padding: "10px", textAlign: "left" }}>Actions</th>
           </tr>
         </thead>
@@ -52,13 +47,10 @@ const UserComponent = () => {
           {users.map((user) => (
             <tr key={user.id} style={{ borderBottom: "1px solid #ddd" }}>
               <td style={{ padding: "10px" }}>{user.id}</td>
-              <td style={{ padding: "10px" }}>{user.full_name}</td>
+              <td style={{ padding: "10px" }}>{user.username}</td>
               <td style={{ padding: "10px" }}>{user.email}</td>
-              <td style={{ padding: "10px" }}>{user.phone_number}</td>
-              <td style={{ padding: "10px" }}>{user.area}</td>
-              <td style={{ padding: "10px" }}>{user.district}</td>
-              <td style={{ padding: "10px" }}>{user.level}</td>
-              <td style={{ padding: "10px" }}>{user.coordinate}</td>
+              <td style={{ padding: "10px" }}>{user.gender}</td>
+              <td style={{ padding: "10px" }}>{user.residence}</td>
               <td style={{ padding: "10px" }}>
                 <button
                   onClick={() => handleUpdateUser(user.id)}
@@ -102,10 +94,10 @@ const UserComponent = () => {
         }}
       >
         <input
-          name="full_name"
+          name="username"
           type="text"
-          placeholder="Full Name"
-          value={newUser.full_name}
+          placeholder="Username"
+          value={newUser.username}
           onChange={handleChange}
           style={{
             marginBottom: "10px",
@@ -128,10 +120,10 @@ const UserComponent = () => {
           }}
         />
         <input
-          name="password_hash"
+          name="password"
           type="password"
           placeholder="Password"
-          value={newUser.password_hash}
+          value={newUser.password}
           onChange={handleChange}
           style={{
             marginBottom: "10px",
@@ -141,10 +133,10 @@ const UserComponent = () => {
           }}
         />
         <input
-          name="phone_number"
+          name="gender"
           type="text"
-          placeholder="Phone Number"
-          value={newUser.phone_number}
+          placeholder="Gender"
+          value={newUser.gender}
           onChange={handleChange}
           style={{
             marginBottom: "10px",
@@ -154,49 +146,10 @@ const UserComponent = () => {
           }}
         />
         <input
-          name="area"
+          name="residence"
           type="text"
-          placeholder="Area"
-          value={newUser.area}
-          onChange={handleChange}
-          style={{
-            marginBottom: "10px",
-            padding: "10px",
-            borderRadius: "4px",
-            border: "1px solid #ddd",
-          }}
-        />
-        <input
-          name="district"
-          type="text"
-          placeholder="District"
-          value={newUser.district}
-          onChange={handleChange}
-          style={{
-            marginBottom: "10px",
-            padding: "10px",
-            borderRadius: "4px",
-            border: "1px solid #ddd",
-          }}
-        />
-        <input
-          name="level"
-          type="text"
-          placeholder="Level"
-          value={newUser.level}
-          onChange={handleChange}
-          style={{
-            marginBottom: "10px",
-            padding: "10px",
-            borderRadius: "4px",
-            border: "1px solid #ddd",
-          }}
-        />
-        <input
-          name="coordinate"
-          type="text"
-          placeholder="Coordinate"
-          value={newUser.coordinate}
+          placeholder="Residence"
+          value={newUser.residence}
           onChange={handleChange}
           style={{
             marginBottom: "10px",

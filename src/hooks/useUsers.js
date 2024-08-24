@@ -1,20 +1,14 @@
-// hooks/useUsers.js
-
 import { useState, useEffect } from "react";
 import UserService from "../services/userServices";
 
 const useUsers = () => {
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState({
-    full_name: "",
+    username: "",
     email: "",
-    password_hash: "",
-    phone_number: "",
-    role: "user",
-    area: "",
-    district: "",
-    level: "",
-    coordinate: "",
+    password: "",
+    gender: "",
+    residence: "",
   });
   const [editingUser, setEditingUser] = useState(null);
   const [error, setError] = useState(null);
@@ -103,23 +97,18 @@ const useUsers = () => {
 
   const resetForm = () => {
     setNewUser({
-      full_name: "",
+      username: "",
       email: "",
-      password_hash: "",
-      phone_number: "",
-      role: "user",
-      area: "",
-      district: "",
-      level: "",
-      coordinate: "",
+      password: "",
+      gender: "",
+      residence: "",
     });
     setEditingUser(null);
   };
 
   const validateUser = (user) => {
-    return user.full_name && user.email && user.password_hash; // Basic validation
+    return user.username && user.email && user.password; // Basic validation
   };
-  
 
   return {
     users,
