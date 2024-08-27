@@ -1,0 +1,16 @@
+/* src/pages/AboutPage.css */
+
+.about-page {
+    padding: 20px;
+  }
+  
+  .about-page h1 {
+    font-size: 2.5em;
+    color: #282c34;
+  }
+  
+  .about-page p {
+    font-size: 1.2em;
+    color: #333;
+  }
+  

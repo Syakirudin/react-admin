@@ -1,60 +1,8 @@
-/* App.css */
+/* src/App.css */
 
-/* Basic reset for body */
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-
-/* Container for the layout */
-.container {
-  display: flex;
-  height: 100vh; /* Full viewport height */
-}
-
-/* Navbar styles */
-.navbar {
+.App {
+  text-align: center;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  width: 200px; /* Adjust width as needed */
-  background-color: #333; /* Navbar background color */
-  padding: 10px;
-  position: fixed; /* Fix the navbar to the left side */
-  top: 0;
-  left: 0;
-  height: 100%; /* Full height */
-}
-
-/* Unordered list styling in the navbar */
-.navbar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-/* List items styling */
-.navbar li {
-  margin-bottom: 10px;
-}
-
-/* Link styling in the navbar */
-.navbar a {
-  text-decoration: none;
-  color: white; /* Link text color */
-  display: block;
-  padding: 10px;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
-
-/* Hover effect for links */
-.navbar a:hover {
-  background-color: #555; /* Background color on hover */
-}
-
-/* Main content area */
-.main-content {
-  margin-left: 210px; /* Adjust based on the navbar width */
-  padding: 20px;
-  flex-grow: 1;
 }
