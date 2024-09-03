@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { get } from '../services/apiService';
 
-const HomePage = () => {
+const Dashboard = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,4 +38,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default Dashboard;

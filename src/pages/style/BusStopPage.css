@@ -1,0 +1,70 @@
+.BusStopPage {
+  text-align: left;
+  margin-left: 200px;
+  padding: 20px;
+}
+
+.form-container {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.card-container {
+  margin-top: 100px;
+  padding: 20px;
+  display: flex; /* Use flexbox to arrange cards horizontally */
+  flex-wrap: wrap; /* Allow cards to wrap to the next line if they overflow */
+  overflow-x: auto; /* Enable horizontal scrolling if needed */
+  max-height: calc(100vh - 200px);
+  background-color: #f9f9f9; /* Changed from red to a lighter color */
+}
+
+.add-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.add-button:hover {
+  background-color: #0056b3;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-right: 20px; /* Space between cards */
+  margin-bottom: 20px; /* Space below cards */
+  flex: 0 1 calc(33.333% - 20px); /* Adjust the width to fit three cards per row with margin */
+  box-sizing: border-box;
+  background-color: white; /* Background color for each card */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for better visual separation */
+}
+
+.card h3 {
+  margin-top: 0;
+}
+
+.card button {
+  margin-right: 10px;
+}
+
+.card-item {
+  margin-bottom: 10px;
+}
+
+.card h2 {
+  margin-bottom: 10px;
+}

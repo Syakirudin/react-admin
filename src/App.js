@@ -1,9 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
+import Dashboard from './pages/DashboardPage';
+import BusStopPage from './pages/BusStopPage';
 import ContactPage from './pages/ContactPage';
-import StopPage from './pages/StopPage';
 import NotFoundPage from './components/NotFoundPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -15,10 +14,10 @@ function App() {
       <Header />
       <div className="App">
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/bus-stop" element={<BusStopPage />} />
           <Route path="/contact" element={<ContactPage />} />
-          <Route path="/stop-page" element={<StopPage />} />
+          
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>

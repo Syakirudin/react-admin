@@ -1,16 +1,18 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './style/Header.css'; // Create this CSS file for styling
+import './style/Header.css';
+
 
 const Header = () => {
   return (
-    <header>
+    <header className="sidebar">
       <nav>
+        <div>PROFILE</div>
         <ul>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/about">About</Link></li>
+          <li><Link to="/">Dashboard</Link></li>
+          <li><Link to="/bus-stop">Bus Stop</Link></li>
           <li><Link to="/contact">Contact</Link></li>
-          <li><Link to="/stop-page">StopPage</Link></li>
+          
         </ul>
       </nav>
     </header>
