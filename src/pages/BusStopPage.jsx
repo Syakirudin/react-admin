@@ -6,47 +6,70 @@ const BusStopPage = () => {
   const [stops, setStops] = useState([]);
   const [isFormVisible, setFormVisible] = useState(false);
   const [editIndex, setEditIndex] = useState(null);
+
   const [formData, setFormData] = useState({
-    no_route: '',
+    no_route: "",
     stops: [
       {
-        location_name: '',
-        city_name: '',
-        coordinate: '',
+        location_name: "",
+        city_name: "",
+        coordinate: "",
       },
     ],
   });
-  const [fetchedData, setFetchedData] = useState(null); // New state for fetched data
+  const [fetchedData, setFetchedData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch stops from API
   const fetchStops = async () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_API_URL}/stops`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
       const data = await response.json();
-      setStops(data);
-      setFetchedData(data); // Update the new state
+      setFetchedData(data);
     } catch (error) {
       console.error("Error fetching stops:", error);
+      setError(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Call fetchStops when the component mounts
   useEffect(() => {
     fetchStops();
   }, []);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
+  // Group data by route_id
+  const groupedByRoute = fetchedData.reduce((acc, stop) => {
+    if (!acc[stop.route_id]) {
+      acc[stop.route_id] = [];
+    }
+    acc[stop.route_id].push(stop);
+    return acc;
+  }, {});
+
+  
 
   const handleSubmit = async (data) => {
     if (editIndex !== null) {
       // Editing existing stop
       const stopId = stops[editIndex].id;
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/stops/${stopId}`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/stops/${stopId}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -63,9 +86,9 @@ const BusStopPage = () => {
       // Adding new stop
       try {
         const response = await fetch(`${process.env.REACT_APP_API_URL}/stops`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(data),
         });
@@ -83,12 +106,12 @@ const BusStopPage = () => {
 
   const handleAddNew = () => {
     setFormData({
-      no_route: '',
+      no_route: "",
       stops: [
         {
-          location_name: '',
-          city_name: '',
-          coordinate: '',
+          location_name: "",
+          city_name: "",
+          coordinate: "",
         },
       ],
     });
@@ -99,12 +122,12 @@ const BusStopPage = () => {
   const handleCancel = () => {
     setFormVisible(false);
     setFormData({
-      no_route: '',
+      no_route: "",
       stops: [
         {
-          location_name: '',
-          city_name: '',
-          coordinate: '',
+          location_name: "",
+          city_name: "",
+          coordinate: "",
         },
       ],
     });
@@ -125,9 +148,12 @@ const BusStopPage = () => {
     const stopId = stops[index].id;
     if (window.confirm("Are you sure you want to delete this stop?")) {
       try {
-        const response = await fetch(`${process.env.REACT_APP_API_URL}/stops/${stopId}`, {
-          method: 'DELETE',
-        });
+        const response = await fetch(
+          `${process.env.REACT_APP_API_URL}/stops/${stopId}`,
+          {
+            method: "DELETE",
+          }
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -157,15 +183,56 @@ const BusStopPage = () => {
       )}
 
       {/* Display cards for fetched data */}
-      <div className="card-container">
-        {fetchedData && fetchedData.length > 0 ? (
-          fetchedData.map((stop, index) => (
-            <div key={stop.id} className="card">
-              <h3>Location: {stop.location_name}</h3>
-              <p>City: {stop.city_name}</p>
-              <p>Coordinate: x: {stop.coordinate.x}, y: {stop.coordinate.y}</p>
-              <button onClick={() => handleEdit(index)} style={{ backgroundColor: "#04AA6D", color: "white", marginLeft: "10px" }}>Edit</button>
-              <button onClick={() => handleDelete(index)} style={{ backgroundColor: "red", color: "white", marginLeft: "10px" }}>Delete</button>
+      <div className="table-container">
+        {Object.entries(groupedByRoute).length > 0 ? (
+          Object.entries(groupedByRoute).map(([routeId, stops]) => (
+            <div key={routeId} className="route-table">
+              <h2>Route No: {routeId}</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Stop Order</th>
+                    <th>Location</th>
+                    <th>City</th>
+                    <th>Coordinate</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {stops.map((stop, index) => (
+                    <tr key={stop.id}>
+                      <td>{index + 1}</td>
+                      <td>{stop.location_name}</td>
+                      <td>{stop.city_name}</td>
+                      <td>
+                        x: {stop.coordinate.x}, y: {stop.coordinate.y}
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => handleEdit(stop.id)}
+                          style={{
+                            backgroundColor: "#04AA6D",
+                            color: "white",
+                            marginLeft: "10px",
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          onClick={() => handleDelete(stop.id)}
+                          style={{
+                            backgroundColor: "red",
+                            color: "white",
+                            marginLeft: "10px",
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           ))
         ) : (

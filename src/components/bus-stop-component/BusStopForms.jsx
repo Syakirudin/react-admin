@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import '../style/BusStopForm.css';
+import React, { useState, useEffect } from "react";
+import "../style/BusStopForm.css";
 
 const BusStopForm = ({ onSubmit, initialData = {}, isEditMode }) => {
   const [formData, setFormData] = useState({
-    no_route: '',
+    no_route: "",
     stops: [
       {
-        location_name: '',
-        city_name: '',
-        coordinate: '',
+        location_name: "",
+        city_name: "",
+        coordinate: "",
       },
     ],
   });
 
-  const [editingIndex, setEditingIndex] = useState(null); // Track which row is being edited
+  const [editingIndex, setEditingIndex] = useState(null);
 
   useEffect(() => {
     if (isEditMode && initialData) {
@@ -34,7 +34,40 @@ const BusStopForm = ({ onSubmit, initialData = {}, isEditMode }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData); // Pass the form data to the parent component
+
+    const requestData = {
+      stopData: formData.stops,
+      routeData: { no_route: formData.no_route },
+    };
+
+    console.log("Submitting data:", requestData); // Log the data before sending
+
+    const method = isEditMode ? "PUT" : "POST";
+    const url = isEditMode
+      ? `${process.env.REACT_APP_API_URL}/stops/${initialData.id}`
+      : `${process.env.REACT_APP_API_URL}/stops`;
+
+    fetch(url, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestData),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log("Success:", data);
+        onSubmit(data); // Notify parent component
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        // Optionally, update UI with error message
+      });
   };
 
   const addNewRow = () => {
@@ -42,7 +75,7 @@ const BusStopForm = ({ onSubmit, initialData = {}, isEditMode }) => {
       ...formData,
       stops: [
         ...formData.stops,
-        { location_name: '', city_name: '', coordinate: '' },
+        { location_name: "", city_name: "", coordinate: "" },
       ],
     });
   };
@@ -76,7 +109,9 @@ const BusStopForm = ({ onSubmit, initialData = {}, isEditMode }) => {
           id="no_route"
           name="no_route"
           value={formData.no_route}
-          onChange={(e) => setFormData({ ...formData, no_route: e.target.value })}
+          onChange={(e) =>
+            setFormData({ ...formData, no_route: e.target.value })
+          }
           required
         />
       </div>
@@ -99,7 +134,7 @@ const BusStopForm = ({ onSubmit, initialData = {}, isEditMode }) => {
                     <input
                       type="text"
                       name="location_name"
-                      value={stop.location_name || ''}
+                      value={stop.location_name || ""}
                       onChange={(e) => handleChange(index, e)}
                       required
                     />
@@ -108,7 +143,7 @@ const BusStopForm = ({ onSubmit, initialData = {}, isEditMode }) => {
                     <input
                       type="text"
                       name="city_name"
-                      value={stop.city_name || ''}
+                      value={stop.city_name || ""}
                       onChange={(e) => handleChange(index, e)}
                       required
                     />
@@ -117,7 +152,7 @@ const BusStopForm = ({ onSubmit, initialData = {}, isEditMode }) => {
                     <input
                       type="text"
                       name="coordinate"
-                      value={stop.coordinate || ''}
+                      value={stop.coordinate || ""}
                       onChange={(e) => handleChange(index, e)}
                       required
                     />
@@ -125,9 +160,9 @@ const BusStopForm = ({ onSubmit, initialData = {}, isEditMode }) => {
                 </>
               ) : (
                 <>
-                  <td>{stop.location_name || 'N/A'}</td>
-                  <td>{stop.city_name || 'N/A'}</td>
-                  <td>{stop.coordinate || 'N/A'}</td>
+                  <td>{stop.location_name || "N/A"}</td>
+                  <td>{stop.city_name || "N/A"}</td>
+                  <td>{stop.coordinate || "N/A"}</td>
                 </>
               )}
               <td>
