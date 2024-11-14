@@ -1,28 +1,37 @@
+// src/App.js
 import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Dashboard from "./pages/DashboardPage";
-import BusStopPage from "./pages/BusStopPage";
-import ContactPage from "./pages/ContactPage";
-import NotFoundPage from "./components/NotFoundPage";
-import Header from "./components/Header";
-// import Footer from "./components/Footer";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"; // Import Router and Routes
+import Home from "./pages/Home";
+import Location from "./pages/Location";
+import Routing from "./pages/Routing";
+// import Schedule from "./pages/Schedule";
+// import Fare from "./pages/Fare";
+import Setting from "./pages/Setting";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import Navbar from "./components/Navbar";
+
 import "./App.css"; // Global styling
 
 function App() {
   return (
-    <Router>
-      <Header />
-      <div className="App">
+    <div className="App">
+      <Navbar />
+      <Router>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/bus-stop" element={<BusStopPage />} />
-          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/location" element={<Location />} />
+          <Route path="/routing" element={<Routing />} />
+          {/* <Route path="/schedule" element={<Schedule />} />
+          <Route path="/fare" element={<Fare />} /> */}
+          <Route path="/setting" element={<Setting />} />
 
-          <Route path="*" element={<NotFoundPage />} />
+
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<Signup />} />
         </Routes>
-      </div>
-      {/* <Footer /> */}
-    </Router>
+      </Router>
+    </div>
   );
 }
 
